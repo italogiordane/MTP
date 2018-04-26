@@ -1,9 +1,7 @@
 //Italo Giordane dos Santos 	11511ETE020
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+
 
 #define decimal 1
 #define hexa 2
