@@ -1,8 +1,6 @@
 //Italo Giordane dos Santos 	11511ETE020
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <math.h>
 
 #define decimal 1
@@ -56,7 +54,7 @@ int binNum(char bin[], int type){
     int i;
     int j;
     int num=0;
-    for(i=0;i<8;i++){
+    for(i=0;i<32;i++){
         if(bin[i] == '1')
                 num = (num*2)+1;
         if(bin[i] == '0')
@@ -71,8 +69,8 @@ int binNum(char bin[], int type){
 int numBin(int numero){
     int i;
     int result=numero;
-    int bin[8];
-    for(i=0;i<8;i++)
+    int bin[32];
+    for(i=0;i<32;i++)
         bin[i]=0;
     for(i=0;result!=0;i++){
         bin[i]=result%2;
@@ -127,7 +125,7 @@ int menu(void){
                 				break;
 
                 case 9:
-                                exit(0);
+                                return(0);
                 default:
                                 printf("Opcao Invalida\n");
                                 goto inicio;
@@ -137,7 +135,7 @@ int menu(void){
 
 int binDecimal(void){
     int i;
-    char bin[8];
+    char bin[32];
     char espera;
     clear();
     printf("Digite o numero binario: ");
@@ -149,7 +147,7 @@ int binDecimal(void){
 }
 int binHexa(void){
     int i;
-    char bin[8];
+    char bin[32];
     char espera;
     clear();
     printf("Digite o numero binario: ");
@@ -211,7 +209,7 @@ long long hexadecimal2decimal () {
 
 int decPhexa(void){
 	int num;
-	char numEmHexa[10];
+	char numEmHexa[32];
 
 	printf("Entre com um numero decimal: ");
 	scanf("%d", &num);
