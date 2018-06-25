@@ -1,56 +1,34 @@
-//Avaliação continuada P1 - Italo Giordane dos Santos			11511ete020
+//Italo Giordane dos Santos			11511ete020
 
 
 #include <stdio.h>
-	
-int main ()
-{
-	int est = 0, n = 0;
-	char bits [256];
-	printf ("\nDigite um numero em binario onde testaremos se eh multiplo de 3: ");
-	scanf ("%s", bits);
-			
-	while(bits[n]!='\0')
-	{
-		if(bits[n]=='0')
-		{
-			if(est==0)
-				est=0;
-			else
-			{
-				if(est==1)
-					est=2;
-				else
-				{
-					if (est==2)
-						est=1;
-				}
-			}	
-		}	
-		if(bits[n]=='1')
-		{
-			if(est==0)
-				est=1;
-			else
-			{
-				if(est==1)
-					est=0;
-				else
-				{
-					if(est=2)
-						est=2;
-				}
-				
-			}
-		}
-		n++;
+
+int main(){
+	int estado =0, i=0, rest = 0;
+	char bits[256];
+	printf("Digite seus numeros para a analise: ");
+	scanf("%s", bits);
+	while(bits[i] != '\0'){
+		if(bits[i] == '0' && estado == 0)
+		rest = 0;
+			if(bits[i] == '1' && estado == 0)
+			rest = 1;
+				if(bits[i] == '0' && estado == 1)
+				rest = 2;
+					if(bits[i] == '1' && estado == 1)
+					rest = 0;
+						if(bits[i] == '0' && estado == 2)
+						rest = 1;
+							if(bits[i] == '1' && estado == 2)
+							rest = 2;
+		estado = rest;
+		rest = 0;
+		i++;
 	}
-	
-	if (est==0)
-		printf("\nO numero digitado eh multiplo de 3...",bits);
-	if (est!=0)
-		printf("\nO numero digitado nao eh multiplo de 3...", bits);
-
+	printf("\nSequencia digitada: %s", bits);
+	if(estado == 0)
+		printf("\nEh multiplo de 3.");
+	else
+		printf("\nNao eh multiplo de 3");
 	return 0;
-
 }
