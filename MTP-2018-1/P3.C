@@ -2,143 +2,146 @@
 
 
 #include <stdio.h>
-unsigned long long int bin_dec(int bin[]) {
-int i = 0; 
-unsigned long long int dec = 0;
-while(i<32) {
-	dec =dec*2+(bin[i] - 0);
-i++;
-}
 
-return dec;
-}
-
-void dec_bin(unsigned int bits,int bin[]) {
-	int i,nb=31;
-	printf("(");
-  while(nb>=0) {
-bin[nb]=bits%2;
-bits=bits/2;
-nb--;
-
-  }
-  	for(i=0;i<32;i++)
-	   	printf("%d",bin[i]);
-	printf(") ");
-}
-int main() {
-	int a,b,c,opcao,nd2,nd1,bin[32],bin2[32],bin3[32];
-	
-	printf("Escolha uma opcao\n\n"
-	"\n1 - Not\n2 - And\n3 - Or\n4 - Xor\n5 - Right Shift\n6 - Left Shift\n");
-	scanf("%d",&opcao); getchar();
-	
-	printf("Digite um numero: ");
-	
-	scanf("%d",&nd1); getchar();
-	
-	switch(opcao){
-		
-		case 1:
-			printf("NOT %d ",nd1);
-	    	dec_bin(nd1,bin);
-	    	for(a=0;a<32;a++)
-	    	bin2[a]=~bin[a] &0x1;
-	    	printf(": %d ",bin_dec(bin2));	
-	    	printf("(");
-	    	for(c=0;c<32;c++)
-	   		printf("%d",bin2[c]);
-			printf(")");
-		break;
-		
-		case 2:
-			printf("Digite outro numero: ");
-			scanf("%d",&nd2);  getchar();
-			printf("%d ",nd1);
-			dec_bin(nd1,bin);
-			printf("AND %d ",nd2);
-			dec_bin(nd2,bin2);
-			for(c=0;c<32;c++)
-			bin3[c]=bin[c]&bin2[c];
-			printf(": %d ",bin_dec(bin3));
-			printf("(");
-			for(c=0;c<32;c++)
-			printf("%d",bin3[c]);
-			printf(")");
-			break;
-			
-		case 3:
-			printf("Digite outro numero : ");
-			scanf("%d",&nd2);  getchar();
-			printf("%d",nd1);
-			dec_bin(nd1,bin);
-			printf("OR %d",nd2);
-			dec_bin(nd2,bin2);
-			for(c=0;c<32;c++)
-			bin3[c]=bin[c]|bin2[c];
-			printf(": %d ",bin_dec(bin3));
-			printf("(");
-			for(c=0;c<32;c++)
-			printf("%d",bin3[c]);
-			printf(")");
-			break;
-		
-		case 4:
-			
-			printf("Digite outro numero : ");
-			scanf("%d",&nd2);  getchar();
-			printf("%d",nd1);
-			dec_bin(nd1,bin);
-			printf("XOR %d",nd2);
-			dec_bin(nd2,bin2);
-			for(c=0;c<32;c++)
-			bin3[c]=bin[c]^bin2[c];
-			printf(": %d ",bin_dec(bin3));
-			printf("(");
-			for(c=0;c<32;c++)
-			printf("%d",bin3[c]);
-			printf(")");
-			break;
-			
-		case 5:
-			printf("Digite o deslocamento: ");
-			scanf("%d",&nd2);  getchar();
-			printf("%d",nd1);
-			dec_bin(nd1,bin);
-			printf(">> %d",nd2);
-			dec_bin(nd2,bin2);
-			for(c=0;c<32-nd2;c++)
-			bin3[c+nd2]=bin[c]>>bin2[c];
-			for(b=0;b<nd2;b++)
-			bin3[b]=0;
-			printf(": %d (",bin_dec(bin3));
-			for(c=0;c<32;c++)
-			printf("%d",bin3[c]);
-			printf(")");
-			break;
-			
-		case 6:
-			printf("Digite o deslocamento: ");
-			scanf("%d",&nd2);  getchar();
-			printf("%d",nd1);
-			dec_bin(nd1,bin);
-			printf("<< %d",nd2);
-			dec_bin(nd2,bin2);
-			a=0;
-			for(c=nd2;c<32;c++){
-			bin3[a]=bin[c]<<bin2[c];
-			a++;
+int dec_all(int num, int vet[256])
+{	int resto[100], guarda, i=0, j=0, base=2, num1=0;
+	if(num < 0)
+	{ num1 = num;
+	  num = (-num) - 1;
+	  guarda = num;		}
+	else if(num >= 0)
+	{	num1 = num;
+		guarda = num;	}
+	resto[0] = 1;
+	for(i=0; num >= base; i++)
+	{	resto[i] = num%base;	
+		num = num/base;
+		if(num < base)
+		{	i++;
+			resto[i] = num;		} 
+	}	if(guarda>base){ i--;	}
+	num = guarda;	
+	guarda = 32;
+	for(j=0; j<guarda; j++)
+	{	if(j < (guarda-(i+1)))
+		{	vet[j] = 0;		}
+		else
+		{	vet[j] = resto[i];
+			i--;
 		}
-			for(c=a;c<32;c++)
-			bin3[c]=0;
-			printf(": %d (",bin_dec(bin3));
-			for(c=0;c<32;c++)
-			printf("%d",bin3[c]);
-			printf(")");
-			break;
-    	default:
-            printf("Opcao Invalida\n");
-
+		if(num1 < 0)
+		{	if(vet[j] == 0){	vet[j] = 1;		}
+			else if(vet[j] == 1){	vet[j] = 0;			}
+		}
 	}
-	return 0;
+		return j; 
 }
+
+int main ()
+{
+	int opcao, i=0, j, k, num1, num2, num3, vet_n[256], vet_n1[256], vet_c[256];
+
+	do
+	{	printf("Calculadora Bitwise");
+		printf("\n1-Not");
+		printf("\n2-And");
+		printf("\n3-Or");
+		printf("\n4-Xor");
+		printf("\n5-Right Shift");
+		printf("\n6-Left Shift");
+		printf("\n7-Sair do programa");
+		printf("\nSua opcao e: ");
+		scanf("%d", &opcao);
+		
+		if(opcao == 7){return 0;}
+		else if(opcao != 1 && opcao <= 7)
+		{	printf("\nDigite os dois valores para nossa Calculadora Bitwise: ");
+			scanf("%d %d", &num1, &num2);
+			getchar();	}
+		else if(opcao == 1)
+		{	printf("\nDigite o valor para ser calculado na Calculadora Bitwise: ");
+			scanf("%d", &num1);
+			getchar();
+		}
+			
+		switch(opcao)
+		{	case 1:
+				j = dec_all(num1, vet_n);
+				printf("\nNOT %d (", num1);
+				for(i=0; i<j; i++){	printf("%d", vet_n[i]); if(i==(j-1)){	printf(") : ");	}	}
+				num1 = ~num1;
+				 j = dec_all(num1, vet_n1);
+				printf(" %d (", num1);
+				for(i=0; i<j; i++){	printf("%d", vet_n1[i]);  if(i==(j-1)){	printf(") ");	}	}
+					printf("\n\n");
+				break;
+			case 2:
+	 			j = dec_all(num1, vet_n);
+				printf("\n%d (", num1);
+				for(i=0; i<j; i++){	printf("%d", vet_n[i]); if(i==(j-1)){	printf(") AND");	}	}
+				 j = dec_all(num2, vet_n1);
+				printf(" %d (", num2);
+				for(i=0; i<j; i++){	printf("%d", vet_n1[i]);  if(i==(j-1)){	printf(") :");	}	}
+				 num3 = num1 & num2;
+				j= dec_all(num3, vet_c);
+				printf(" %d (" ,num3);
+				for(i=0; i<j; i++){	printf("%d", vet_c[i]);   if(i==(j-1)){	printf(") ");	}	}
+				printf("\n\n");
+				break;
+			case 3:
+				j = dec_all(num1, vet_n);
+				printf("\n%d (", num1);
+				for(i=0; i<j; i++){	printf("%d", vet_n[i]); if(i==(j-1)){	printf(") OR");	}	}
+				 j = dec_all(num2, vet_n1);
+				printf(" %d (", num2);
+				for(i=0; i<j; i++){	printf("%d", vet_n1[i]);  if(i==(j-1)){	printf(") :");	}	}
+				 num3 = num1 | num2;
+				j= dec_all(num3, vet_c);
+				printf(" %d (" ,num3);
+				for(i=0; i<j; i++){	printf("%d", vet_c[i]);   if(i==(j-1)){	printf(") ");	}	}
+				printf("\n\n");
+				break;
+			case 4:
+				j = dec_all(num1, vet_n);
+				printf("\n%d (", num1);
+				for(i=0; i<j; i++){	printf("%d", vet_n[i]); if(i==(j-1)){	printf(") XOR");	}	}
+				 j = dec_all(num2, vet_n1);
+				printf(" %d (", num2);
+				for(i=0; i<j; i++){	printf("%d", vet_n1[i]);  if(i==(j-1)){	printf(") :");	}	}
+				 num3 = num1 ^ num2;
+				j= dec_all(num3, vet_c);
+				printf(" %d (" ,num3);
+				for(i=0; i<j; i++){	printf("%d", vet_c[i]);   if(i==(j-1)){	printf(") ");	}	}
+				printf("\n\n");
+				break;
+			case 5:
+				j = dec_all(num1, vet_n);
+				printf("\n%d (", num1);
+				for(i=0; i<j; i++){	printf("%d", vet_n[i]); if(i==(j-1)){	printf(") >>");	}	}
+				 j = dec_all(num2, vet_n1);
+				printf(" %d (", num2);
+				for(i=0; i<j; i++){	printf("%d", vet_n1[i]);  if(i==(j-1)){	printf(") :");	}	}
+				 num3 = num1 >> num2;
+				j= dec_all(num3, vet_c);
+				printf(" %d (" ,num3);
+				for(i=0; i<j; i++){	printf("%d", vet_c[i]);   if(i==(j-1)){	printf(") ");	}	}
+				printf("\n\n");
+				break;
+			case 6:
+				j = dec_all(num1, vet_n);
+				printf("\n%d (", num1);
+				for(i=0; i<j; i++){	printf("%d", vet_n[i]); if(i==(j-1)){	printf(") >>");	}	}
+				 j = dec_all(num2, vet_n1);
+				printf(" %d (", num2);
+				for(i=0; i<j; i++){	printf("%d", vet_n1[i]);  if(i==(j-1)){	printf(") :");	}	}
+				 num3 = num1 << num2;
+				j= dec_all(num3, vet_c);
+				printf(" %d (" ,num3);
+				for(i=0; i<j; i++){	printf("%d", vet_c[i]);   if(i==(j-1)){	printf(") ");	}	}
+				printf("\n\n");
+				break;
+			default:
+				break;
+		}
+	}while(1);
+} 
