@@ -4,31 +4,35 @@
 #include <stdio.h>
 
 int main(){
-	int estado =0, i=0, rest = 0;
-	char bits[256];
-	printf("Digite seus numeros para a analise: ");
-	scanf("%s", bits);
-	while(bits[i] != '\0'){
-		if(bits[i] == '0' && estado == 0)
-		rest = 0;
-			if(bits[i] == '1' && estado == 0)
-			rest = 1;
-				if(bits[i] == '0' && estado == 1)
-				rest = 2;
-					if(bits[i] == '1' && estado == 1)
-					rest = 0;
-						if(bits[i] == '0' && estado == 2)
-						rest = 1;
-							if(bits[i] == '1' && estado == 2)
-							rest = 2;
-		estado = rest;
-		rest = 0;
-		i++;
-	}
-	printf("\nSequencia digitada: %s", bits);
-	if(estado == 0)
-		printf("\nEh multiplo de 3.");
-	else
-		printf("\nNao eh multiplo de 3");
-	return 0;
+    int estado=0, i, a=0;
+    char bits[256], ibits[256];
+    printf("Por favor, digite a sequencia de Um(s)e Zero(s): ");
+    fflush(stdin);
+    scanf("%s", (char *) &bits);
+    for(i=0; bits[i] != '\0';i++){
+        a+=1;
+    }
+    for(i=a-1; i>=0; i--){
+        ibits[a-1-i] = bits[i];
+    }
+    ibits[a] = '\0';
+    i=0;
+    while(ibits[i] != '\0'){
+        if(estado == 0){
+            if(ibits[i]=='1')
+                estado+=1;
+        }else if(estado == 1){
+            if(ibits[i]=='0'){
+                estado+=1;
+            }else{
+                estado-=1;
+            }
+        }else{
+            if(ibits[i] == '0')
+                estado-=1;
+        }
+        i+=1;
+    }
+    printf("Estado: %d\nA sequencia %s %seh multipla de 3", estado, bits, (estado!=0?"nao ":""));
+    return 0;
 }
